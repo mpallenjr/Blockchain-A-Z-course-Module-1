@@ -27,5 +27,15 @@ class Blockchain:  #Class will include Genesis Block, Initalize a Chain(init fun
     def get_previous_block(self):                           #function that returns the last block of the chain
         return self.chain[-1]
 
+    def proof_of_work(self, previous_proof):                #The part of the data the the miner needs to find to claim this block.  The puzzle that needs to be challeneged by the miner.  Hard to find, but easy to verify.
+        new_proof = 1                                       #To solve the problem you will increase New_proof by one at each increment of the while loop. 
+        check_proof = False                                 #Used to stop the while loop once the check_proof becomes true
+        while check_proof is False:                         
+            hash_operation = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest() #Must have a non symetrical operation here to avoid having the same proof in the operation. 
+            if hash_operation[:4] == '0000':                #The more leading zeros, the harder it will be for the miner to crack the code. 
+                check_proof = True
+            else:
+                new_proof += 1
+        return new_proof
 # Part 2 - Mining our Blockchain
 
